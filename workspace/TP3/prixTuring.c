@@ -50,34 +50,56 @@ int scanLineAsInt() {
 
 struct TuringWinner {
 	int annee;
-	char nom;
-	char commentaire;
+	char *nom;
+	char *commentaire;
 };
 
 typedef struct TuringWinner TuringWinner;
 
-void readWinners(char **Winner) {
-	TuringWinner *Winners[50];
-	for (int i = 0; i < 50; i++){
-		TuringWinner Winner;
-		int winnerYear = scanLineAsInt();
-		Winner.annee = winnerYear;
-		
-		char *winnerName = scanLine();
-		Winner.nom = *winnerName;
-
-		char *winnerDesc = scanLine();
-		Winner.commentaire = *winnerDesc;
-
-		*Winners[i] = Winner;
+void readWinners(TuringWinner **Winner, int nombreGagnants) {
+	*Winner = (TuringWinner *)calloc(nombreGagnants, sizeof(TuringWinner));
+	for (int i = 0; i < nombreGagnants; i++) {
+		(*Winner)[i].annee = scanLineAsInt();
+		(*Winner)[i].nom = scanLine();
+		(*Winner)[i].commentaire = scanLine();
 	}
 }
 
-int main(void){
+void printWinners(TuringWinner *Winner, int nombreGagnants) {
+	printf("%i\n", nombreGagnants);
+	for (int i = 0; i < nombreGagnants; i++) {
+		printf("%i\n", Winner[i].annee);
+		printf("%s\n", Winner[i].nom);
+		printf("%s\n", Winner[i].commentaire);
+	}
+}
+
+void infoAnnee(TuringWinner *Winner, int nombreGagnants, int annee) {
+	for (int i = 0; i < nombreGagnants; i++) {
+		if (Winner[i].annee == annee) {
+			printf("L'année %i, le(s) gagnant(s) ont été: %s\nNature des travaux : %s\n", Winner[i].annee, Winner[i].nom, Winner[i].commentaire);
+		}
+	}
+}
+
+int main(int argc, char *argv[]){
+	// int nbGagnants = scanLineAsInt();
+	// printf("nbGagnants = %i\n",nbGagnants);
+
 	int nbGagnants = scanLineAsInt();
-	printf("nbGagnants = %i\n",nbGagnants);
 	TuringWinner *Winner;
-	readWinners(Winner);
+	readWinners(&Winner, nbGagnants);
+
+	if (argc != 0 && (strcmp(argv[1], "infoAnnee")) == 0) {
+		int annee;
+		sscanf(argv[2], "%i", &annee);
+		infoAnnee(Winner, nbGagnants, 2003);
+	}
+	else {
+		printWinners(Winner, nbGagnants);
+	}
+
+	free(Winner);
 
 	return EXIT_SUCCESS;
 }
