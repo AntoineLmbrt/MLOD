@@ -54,22 +54,40 @@ void afficheListe_r(Liste l) {
 	}
 }
 
-void detruireElement(Element e) {}
+void detruireElement(Element e) {
+	free(&e);
+	e = NULL;
+}
 
 // Détruit tous les éléments de la liste l
 // version itérative
 void detruire_i(Liste l) {
-	TODO;
+	if (!estVide(l)) {
+		while (!estVide(l)) {
+			detruireElement(l->val);
+			l = l->suiv;
+		}
+	};
 }
 
 // version récursive
 void detruire_r(Liste l) {
-	TODO;
+	if (!estVide(l)) {
+		detruireElement(l);
+		detruire_r(l->suiv);
+	}
 }
 
 // retourne la liste dans laquelle l'élément v a été ajouté en fin
 // version itérative
 Liste ajoutFin_i(Element v, Liste l) {
+	Liste fin = creer(v);
+	if (!estVide(l)) {
+		while (!estVide(l)) {
+			l = l->suiv;
+		} 
+		l->suiv = fin;
+	}
 	return TODO;
 }
 
