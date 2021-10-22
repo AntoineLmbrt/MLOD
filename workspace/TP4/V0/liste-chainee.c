@@ -54,26 +54,27 @@ void afficheListe_r(Liste l) {
 	}
 }
 
-void detruireElement(Element e) {
-	free(&e);
-	e = NULL;
-}
+void detruireElement(Element e) {}
+
 
 // Détruit tous les éléments de la liste l
 // version itérative
 void detruire_i(Liste l) {
-	if (!estVide(l)) {
-		while (!estVide(l)) {
-			detruireElement(l->val);
-			l = l->suiv;
-		}
-	};
+	Liste tempListe;
+	while (!estVide(l)) {
+		tempListe = l;
+		detruireElement(l->val);
+		free(l);
+		l = tempListe->suiv;
+	}
 }
 
 // version récursive
 void detruire_r(Liste l) {
-	if (!estVide(l)) {
-		detruireElement(l);
+	if (l->suiv == NULL) {
+		detruireElement(l->val);
+		free(l);
+	} else {
 		detruire_r(l->suiv);
 	}
 }
@@ -81,19 +82,35 @@ void detruire_r(Liste l) {
 // retourne la liste dans laquelle l'élément v a été ajouté en fin
 // version itérative
 Liste ajoutFin_i(Element v, Liste l) {
+	Liste newListe;
 	Liste fin = creer(v);
 	if (!estVide(l)) {
-		while (!estVide(l)) {
+		while (l->suiv != NULL) {
 			l = l->suiv;
 		} 
 		l->suiv = fin;
+		newListe = l;
+	} else {
+		newListe = fin;
 	}
-	return TODO;
+	return newListe;
 }
 
 // version recursive
 Liste ajoutFin_r(Element v, Liste l) {
-	return TODO;
+	Liste newListe;
+	Liste fin = creer(v);
+	if (!estVide(l)) {
+		if (l->suiv == NULL) {
+			l->suiv = fin;
+		} else {
+			ajoutFin_r(v, l->suiv);
+		}
+		newListe = l;
+	} else {
+		newListe = fin;
+	}
+	return newListe;
 }
 
 // compare deux elements
@@ -104,12 +121,27 @@ bool equalsElement(Element e1, Element e2){
 // Retourne un pointeur sur l'élément de la liste l contenant la valeur v ou NULL
 // version itérative
 Liste cherche_i(Element v,Liste l) {
-	return TODO;
+	while (l->suiv != NULL) {
+		if (equalsElement(l->val, v)) {
+			return l;
+		} else {
+			l = l->suiv;
+		}
+	}
+	return NULL;
 }
 
 // version récursive
 Liste cherche_r(Element v,Liste l) {
-	return TODO;
+	Liste newListe;
+	if (estVide(l)) {
+		return l;
+	}
+	else if (equalsElement(l->val, v)) {
+		return l;
+	} else {
+		return cherche_r(v, l->suiv);
+	}
 }
 
 // Retourne la liste modifiée dans la laquelle le premier élément ayant la valeur v a été supprimé
