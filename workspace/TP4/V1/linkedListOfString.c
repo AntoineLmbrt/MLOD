@@ -7,16 +7,16 @@
 // FONCTIONS EXTERNES
 
 void afficheElement(Element e) {
-    printf("%s", (char *)e);
+    printf("%s ", (char *)e);
 }
 
 void detruireElement(Element e) {}
 
 bool equalsElement(Element e1, Element e2) {
-    return strcomp((char *)e1, (char *)e2)==0;
+    return strcmp((char *)e1, (char *)e2) == 0;
 }
 
-// MAIN
+// FONCTION MAIN
 
 int main(void) {
     Liste l;
