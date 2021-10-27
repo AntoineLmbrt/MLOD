@@ -33,7 +33,25 @@ Liste addMusicToList(FILE *fichier, char *line, Liste listOfMusic) {
 }
 
 Liste orderByYear(Liste listOfMusic) {
-    
+
+    Liste tempList = listOfMusic;
+    Liste nextList = NULL;
+    void *temp;
+
+    while(!estVide(tempList)) {
+        nextList = tempList->suiv;
+        while(!estVide(nextList)) {
+            if (((Music *)tempList->val)->year > ((Music *)nextList->val)->year) {
+                temp = nextList->val;
+                nextList->val = tempList->val;
+                tempList->val = temp;
+            }
+            nextList = nextList->suiv;
+        }
+        tempList = tempList->suiv;
+    }
+
+    return listOfMusic;
 }
 
 void afficheElement(Element e) {
@@ -56,7 +74,7 @@ void afficheElement(Element e) {
 void detruireElement(Element e) {
 
     Music *music = (Music *)e;
-    
+
     free(music);
     e = NULL;
 }

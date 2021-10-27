@@ -24,6 +24,9 @@ int main(void) {
         listOfMusic = addMusicToList(fichier, line, listOfMusic);
     }
 
+    //Triage de la liste par année
+    listOfMusic = orderByYear(listOfMusic);
+
     // Affichage (donc écriture) de notre Liste de musique
     // Retour à la ligne pour chaque musique
     afficheListe_r(listOfMusic);
